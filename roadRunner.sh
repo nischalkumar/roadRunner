@@ -9,8 +9,14 @@ echo "$token"
 }
 function GET_CURL {
 oAuth_token=$1
-endpoint="$2$3"
+endpoint="$2"
+echo "hitting $endpoint   "
 curl -kX GET -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$endpoint"
+}
+function DELETE_CUL {
+oAuth_token=$1
+endpoint="$2$3"
+curl -kX DELETE -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$endpoint"
 }
 function POST_CURL {
 oAuth_token=$1
@@ -33,8 +39,8 @@ echo "-------------"
 echo "auth_token $oAuth_token"
 if [[ $METHOD == *"GET"* ]]
 then
-	echo "---GET---"
-	GET_CURL $oAuth_token $2 $3
+	echo "---GET--- $2 $3"
+	curl -kX GET -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$2$3"
 elif [[ $METHOD == *"POST"* ]]
 then
 	echo "---POST---"
@@ -42,9 +48,16 @@ then
 	echo "----------------------------"
 	curl -kX POST --data "$4"  -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$2$3"
 	#POST_CURL $aAuth_token $2 $3 $4
-else
-	echo "---ELSE---"
-	GET_CURL $oAuth_token $2 $3
+elif [[ $METHOD == *"PUT"* ]]
+then
+	echo "---PUT---"
+	echo "data $4"
+	echo "----------------------------"
+	curl -kX PUT --data "$4"  -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$2$3"
+elif [[ $METHOD == *"DELETE"* ]]
+then
+	echo "---DELETE---"
+	curl -kX DELETE -v  -H "Accept: application/json" -H "Authorization: Bearer $oAuth_token" -H "Content-Type: application/json" "$2$3"
 fi
 	
 
